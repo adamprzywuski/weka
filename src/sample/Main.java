@@ -6,9 +6,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import weka.core.converters.ConverterUtils.DataSource;
-import weka.*;
+
 
 public class Main extends Application {
+
+    private static DataSource dataSource;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -19,15 +21,11 @@ public class Main extends Application {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        Weka AI=new Weka("src/training_set.arff","src/testing_set.arff");
+        AI.buildingModel();
         launch(args);
-        try {
-            DataSource dataSource = new DataSource("credit.arff");
-        }
-        catch (Exception ex)
-        {
-            System.out.println("The dataset is incorrect or it can't be founded"+ex);
-        }
+
 
 
     }
