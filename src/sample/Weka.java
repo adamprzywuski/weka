@@ -2,7 +2,7 @@ package sample;
 
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.J48;
-import weka.core.FastVector;
+import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils;
 
@@ -36,19 +36,19 @@ public class Weka {
         cls.buildClassifier(dataTraining);
         Evaluation eval=new Evaluation(dataTesting);
         eval.evaluateModel(cls,dataTraining);
-
-        FastVector pred= (FastVector) eval.predictions();
-
-        pred.appendElements(eval.predictions());
-        System.out.println("test");
-        Object[] vec=eval.predictions().toArray();
-        for(int i=0;i<vec.length;i++)
+        System.out.println("Actual || Predicted");
+        //testing
+        for(int i=0;i<dataTesting.numInstances();i++)
         {
-            System.out.println(vec[i]);
+            double actualClass=dataTesting.instance(i).classValue();
+            String actual=dataTesting.classAttribute().value((int) actualClass);
+            Instance newInst=dataTesting.instance(i);
+            double predJ48=cls.classifyInstance(newInst);
+            String predString=dataTesting.classAttribute().value((int) predJ48);
+            System.out.println(actual+"  "+predString);
 
 
         }
-
 
 
 
