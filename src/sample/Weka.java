@@ -2,10 +2,9 @@ package sample;
 
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.J48;
-
+import weka.core.FastVector;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils;
-import weka.gui.beans.Classifier;
 
 
 
@@ -37,6 +36,23 @@ public class Weka {
         cls.buildClassifier(dataTraining);
         Evaluation eval=new Evaluation(dataTesting);
         eval.evaluateModel(cls,dataTraining);
+
+        FastVector pred= (FastVector) eval.predictions();
+
+        pred.appendElements(eval.predictions());
+        System.out.println("test");
+        Object[] vec=eval.predictions().toArray();
+        for(int i=0;i<vec.length;i++)
+        {
+            System.out.println(vec[i]);
+
+
+        }
+
+
+
+
+
         System.out.println(eval.toSummaryString("\nResult\n======\n",false));
 
     }
