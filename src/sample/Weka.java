@@ -40,8 +40,7 @@ public class Weka {
         cls.setOptions(options);
 
         //spliting the dataset into
-        int trainSize = (int) Math.round(dataTraining.numInstances() * 25
-                / 100);
+        int trainSize = (int) Math.round(dataTraining.numInstances() * 0.75);
         int testSize = dataTraining.numInstances() - trainSize;
         Instances train = new Instances(dataTraining, 0, trainSize);
         Instances test = new Instances(dataTraining, trainSize, testSize);
@@ -55,7 +54,7 @@ public class Weka {
 
         long elapsedTime=System.currentTimeMillis()-start;
         Evaluation eval=new Evaluation(test);
-        eval.evaluateModel(cls,train);
+        eval.evaluateModel(cls,test);
         System.out.println("Actual || Predicted");
         //Creating prediction for a TestDataSet
         int well_predicted=0;
@@ -73,11 +72,11 @@ public class Weka {
         }
 
 
-
         //Printing results about model
         System.out.println(eval.toSummaryString("\nResult\n======\n",false));
         System.out.println("Percent of correct predicted values: "+ (double)well_predicted/test.numInstances()*100 +"%" );
         System.out.println("Time takes to build the model: "+elapsedTime+" ms");
+        System.out.println("Train - test " + train.size() + " " + test.size());
 
     }
 
