@@ -1,42 +1,40 @@
-import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+
+from models.classifier import classifier
+from models.data_preprocessing.german_credit import preprocess_german_credit
+from models.data_preprocessing.glass import preprocess_glass
+from models.results import calculate_results
 
 np.seterr(divide='ignore', invalid='ignore')
 
-features = pd.read_csv("credit-g.csv")
-print('The shape of our features is:', features.shape)
-print(features.describe())
-features = pd.get_dummies(features)
-print(features.iloc[:,5:].head(5))
+# preprocess
+features_gcd, labels_gcd = preprocess_german_credit()
+features_glass, labels_glass = preprocess_glass()
 
-labels = np.array(features['class_good'])
-print(labels)
-features = features.drop('class_good', axis = 1)
-features = features.drop('class_bad', axis = 1)
+# classify
+rf_classifier = RandomForestClassifier(n_estimators=100)
+ab_classifier = AdaBoostClassifier(n_estimators=100)
 
-feature_list = list(features.columns)
-# print(feature_list)
-features = np.array(features)
+## random forest
+test_labels_gcd_rf, y_pred_gcd_rf, delta_gcd_rf =classifier(features_gcd, labels_gcd, rf_classifier)
+test_labels_glass_rf, y_pred_glass_rf, delta_glass_rf = classifier(features_glass, labels_glass, ab_classifier)
 
-train_features, test_features, train_labels, test_labels = train_test_split(features, labels, test_size = 0.25, random_state = 42)
+## adaboost
+test_labels_gcd_ab, y_pred_gcd_ab, delta_gcd_ab = classifier(features_gcd, labels_gcd, rf_classifier)
+test_labels_glass_ab, y_pred_glass_ab, delta_glass_ab = classifier(features_glass, labels_glass, ab_classifier)
 
-print('Training Features Shape:', train_features.shape)
-print('Training Labels Shape:', train_labels.shape)
-print('Testing Features Shape:', test_features.shape)
-print('Testing Labels Shape:', test_labels.shape)
 
-rf = RandomForestRegressor(n_estimators = 1000, random_state = 42)
-rf.fit(train_features, train_labels);
-predictions = rf.predict(test_features)
-# print(predictions)
-errors = abs(predictions - test_labels)
-print('Mean Absolute Error:', round(np.mean(errors), 2), 'degrees.')
+# results
+print("Random forest results:\n")
+print("\tgerman credit data:\n")
+calculate_results(test_labels_gcd_rf, y_pred_gcd_rf, delta_gcd_rf)
+print("\n\tglass:\n")
+calculate_results(test_labels_glass_rf, y_pred_glass_rf, delta_glass_rf)
 
-# Calculate mean absolute percentage error (MAPE)
-mape = 100 * (errors / test_labels)
-# Calculate and display accuracy
-accuracy = 100 - np.mean(mape[np.isfinite(mape)])
+print("Adaboost:\n")
+print("\tgerman credit data:\n")
+calculate_results(test_labels_gcd_ab, y_pred_gcd_ab, delta_gcd_ab)
+print("\n\tglass:\n")
+calculate_results(test_labels_glass_ab, y_pred_glass_ab, delta_glass_ab)
 
-print('Accuracy:', round(accuracy, 2), '%.')
