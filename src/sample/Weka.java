@@ -30,14 +30,35 @@ public class Weka {
         System.out.println("The dataset was loaded correctly");
     }
 
-    void buildingModel() throws Exception {
+
+    Weka(String location_dataset)
+    {
+        try {
+
+            //Loading Datasets
+            ConverterUtils.DataSource dataSourceTraining = new ConverterUtils.DataSource(location_dataset);
+            dataTraining=dataSourceTraining.getDataSet();
+            dataTraining.setClassIndex(dataTraining.numAttributes()-1);
+        } catch (Exception ex) {
+            System.out.println("The dataset is incorrect or it can't be founded " + ex);
+        }
+        System.out.println("The dataset was loaded correctly");
+    }
+
+
+
+
+    void buildingModelPredicted() throws Exception {
         //Options for model
         String[] options = new String[1];
         options[0] = "-U";
         //Creating model
         J48 cls= new J48();
         cls.setOptions(options);
+
+        long start=System.currentTimeMillis();
         cls.buildClassifier(dataTraining);
+        long elapsedTime=System.currentTimeMillis()-start;
         Evaluation eval=new Evaluation(dataTesting);
         eval.evaluateModel(cls,dataTraining);
         System.out.println("Actual || Predicted");
@@ -59,6 +80,28 @@ public class Weka {
 
         //Printing results about model
         System.out.println(eval.toSummaryString("\nResult\n======\n",false));
+        System.out.println("Time takes to build the model: "+elapsedTime);
+
+    }
+
+    void buildingModel() throws Exception {
+        //Options for model
+        String[] options = new String[1];
+        options[0] = "-U";
+        //Creating model
+        J48 cls= new J48();
+        cls.setOptions(options);
+
+        long start=System.currentTimeMillis();
+        cls.buildClassifier(dataTraining);
+        long elapsedTime=System.currentTimeMillis()-start;
+        Evaluation eval=new Evaluation(dataTraining);
+        eval.evaluateModel(cls,dataTraining);
+        System.out.println("Actual || Predicted");
+
+        //Printing results about model
+        System.out.println(eval.toSummaryString("\nResult\n======\n",false));
+        System.out.println("Time takes to build the model: "+elapsedTime);
 
     }
 

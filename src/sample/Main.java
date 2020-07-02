@@ -20,8 +20,11 @@ public class Main extends Application {
 
 
     public static void main(String[] args) throws Exception {
-        Weka AI=new Weka("src/training_set.arff","src/testing_set.arff");
-        AI.buildingModel();
+        Weka prediction_credits=new Weka("src/training_set.arff","src/testing_set.arff");
+        prediction_credits.buildingModelPredicted();
+
+        Weka glass=new Weka("src/glass.arff");
+        glass.buildingModel();
         launch(args);
 
 
