@@ -1,7 +1,6 @@
 package sample;
 
 import weka.classifiers.Evaluation;
-import weka.classifiers.trees.J48;
 import weka.classifiers.trees.RandomForest;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -54,7 +53,7 @@ public class Weka {
         String[] options = new String[1];
         options[0] = "-U";
         //Creating model
-        J48 cls= new J48();
+        RandomForest cls= new RandomForest();
         cls.setOptions(options);
 
         long start=System.currentTimeMillis();
@@ -81,7 +80,7 @@ public class Weka {
 
         //Printing results about model
         System.out.println(eval.toSummaryString("\nResult\n======\n",false));
-        System.out.println("Time takes to build the model: "+elapsedTime);
+        System.out.println("Time takes to build the model: "+elapsedTime+" ms");
 
     }
 
@@ -101,8 +100,8 @@ public class Weka {
         System.out.println("Actual || Predicted");
 
         //Printing results about model
-        System.out.println(eval.toSummaryString("\nResult\n======\n",false));
-        System.out.println("Time takes to build the model: "+elapsedTime);
+        System.out.println(eval.toSummaryString("\nResult\n======\n",true));
+        System.out.println("Time takes to build the model: "+elapsedTime+" ms");
 
     }
 
