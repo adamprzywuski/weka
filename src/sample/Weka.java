@@ -2,6 +2,7 @@ package sample;
 
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.J48;
+import weka.classifiers.trees.RandomForest;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils;
@@ -89,7 +90,7 @@ public class Weka {
         String[] options = new String[1];
         options[0] = "-U";
         //Creating model
-        J48 cls= new J48();
+        RandomForest cls= new RandomForest();
         cls.setOptions(options);
 
         long start=System.currentTimeMillis();

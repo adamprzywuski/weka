@@ -21,11 +21,15 @@ public class Main extends Application {
 
     public static void main(String[] args) throws Exception {
         Weka prediction_credits=new Weka("src/training_set.arff","src/testing_set.arff");
-        prediction_credits.buildingModelPredicted();
+        //prediction_credits.buildingModelPredicted();
 
         Weka glass=new Weka("src/glass.arff");
-        glass.buildingModel();
-        launch(args);
+        //glass.buildingModel();
+
+        Weka covid=new Weka("src/covid_19.csv");
+        covid.buildingModel();
+
+        //launch(args);
 
 
 
