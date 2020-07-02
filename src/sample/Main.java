@@ -41,7 +41,7 @@ public class Main extends Application {
 
 
         btn1.setOnAction(actionEvent ->  {
-            Weka prediction_credits=new Weka("src/training_set.arff","src/testing_set.arff");
+            Weka prediction_credits=new Weka("src/german_credit.arff");
             try {
                 prediction_credits.buildingModelPredicted();
             } catch (Exception e) {
