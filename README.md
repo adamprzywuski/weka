@@ -1,4 +1,4 @@
-# weka
+# Weka
 It' repository made for University of Technology in Poznan for Artficial Inteligence.
 
 The goal of project was testing the Weka.
